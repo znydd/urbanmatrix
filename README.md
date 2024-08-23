@@ -29,3 +29,16 @@ app/
 ├── schemas/
 └── main.py    
 
+app/
+  __init__.py
+  api/
+    __init__.py
+    endpoints/
+      __init__.py
+      users.py
+      items.py
+      auth.py
+    router.py
+  db/
+  schemas/
+  main.py
