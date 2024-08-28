@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, setAuthToken } from "../../utils/api";
+import { login, setAuthToken } from "../../utils/authApi";
 
 export default function Login() {
   const [email, setEmail] = useState('');
