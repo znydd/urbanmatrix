@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, setAuthToken } from "../../utils/authApi";
+import { login } from "../../utils/authApi";
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const { access_token } = await login(email, password);
-      setAuthToken(access_token);
+      // setAuthToken(access_token);
       localStorage.setItem('token', access_token);
       router.push('/dashboard');
     } catch (err) {
