@@ -15,8 +15,12 @@ app.add_middleware(
 )
 
 #for testing
+@app.get("/")
+def read_items():
+
+    return {"hello":"world"}
 @app.get("/user")
-def read_items(db = Depends(get_db), current_user: dict = Depends(get_current_user) ):
+def read_items(db = Depends(get_db), current_user: dict = Depends(get_current_user)):
     with db.cursor() as cursor:
         cursor.execute("SELECT * FROM users")
         items = cursor.fetchall()
