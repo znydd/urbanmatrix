@@ -2,44 +2,26 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { useUser } from '@/context/userContext'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Dashboard() {
-    const [data, setData] = useState<any>(null);
     const [error, setError] = useState('');
     const router = useRouter();
+    const userInfo = useUser() 
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
-            router.push('/login');
-        } else {
-            fetchData(token);
+            router.push('/');
         }
     }, []);
-
-    const fetchData = async (token: string) => {
-        try {
-            const response = await axios.get(`${API_URL}/user`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setData(response.data);
-        } catch (err) {
-            setError('Failed to fetch data. Please log in again.');
-            localStorage.removeItem('token');
-            router.push('/login');
-        }
-    };
-    console.log(data)
-
+    console.log(userInfo)
     const logout = () => {
         localStorage.removeItem('token');
         router.push('/');
-        
     }
 
     return (
@@ -47,10 +29,10 @@ export default function Dashboard() {
         <Card className="w-full min-h-screen mx-auto">
             <CardHeader className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center sm:space-y-0">
                 <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-                    <Button variant="outline">NID XXXXXXXXXX</Button>
-                    <Button variant="outline">Birth Certificate XXXXXXXXXX</Button>
+                    <Button variant="outline">{userInfo ? `${userInfo.nid}` : 'Loading...'}</Button>
+                    <Button variant="outline">{userInfo ? `${userInfo.birth_cert}` : 'Loading...'}</Button>
                 </div>
-                <Button variant="outline">Name @user_name</Button>
+                <Button variant="outline">{userInfo ? `${userInfo.name}` : 'Loading...'}</Button>
             </CardHeader>
             <CardContent>
                 <Card className=' min-h-[650px] bg-slate-50'>
