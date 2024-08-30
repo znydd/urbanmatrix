@@ -8,9 +8,9 @@ import { useEffect } from "react";
 export default function Home() {
   useEffect(() => {
     history.pushState(null, '', "/");
-    window.addEventListener('popstate', function (event) {
-        history.pushState(null, '', "/");
-    });
+    // window.addEventListener('popstate', function (event) {
+    //     history.pushState(null, '', "/");
+    // });
 }, []);  
   return (
     <>
