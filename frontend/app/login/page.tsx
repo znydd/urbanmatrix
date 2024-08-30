@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "../../utils/authApi";
 
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +19,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const { access_token } = await login(email, password);
-      // setAuthToken(access_token);
-      localStorage.setItem('token', access_token);
+      localStorage.setItem('token', access_token);    
       router.push('/dashboard');
     } catch (err) {
       setError('Login failed. Please check your credentials.');
