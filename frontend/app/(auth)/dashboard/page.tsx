@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { useUser } from '@/context/userContext'
-
+import { ProtectedRoute } from '@/components/protectedRoute'; 
 
 export default function Dashboard() {
     const [error, setError] = useState('');
@@ -18,6 +18,7 @@ export default function Dashboard() {
             router.push('/');
         }
     }, []);
+ 
     console.log(userInfo)
     const logout = () => {
         localStorage.removeItem('token');
@@ -26,11 +27,12 @@ export default function Dashboard() {
 
     return (
         <>
+        <ProtectedRoute>
         <Card className="w-full min-h-screen mx-auto">
             <CardHeader className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center sm:space-y-0">
                 <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-                    <Button variant="outline">{userInfo ? `${userInfo.nid}` : 'Loading...'}</Button>
-                    <Button variant="outline">{userInfo ? `${userInfo.birth_cert}` : 'Loading...'}</Button>
+                    <Button variant="outline">{userInfo ? `${!userInfo.nid ? 'XXXX-XXXX' : userInfo.nid}` : 'Loading...'}</Button>
+                    <Button variant="outline">{userInfo ? `${!userInfo.birth_cert ? 'XXXX-XXXX' : userInfo.birth_cert}` : 'Loading...'}</Button>
                 </div>
                 <Button variant="outline">{userInfo ? `${userInfo.name}` : 'Loading...'}</Button>
             </CardHeader>
@@ -38,8 +40,8 @@ export default function Dashboard() {
                 <Card className=' min-h-[650px] bg-slate-50'>
                     <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6">
                         <Button>Raise Issues</Button>
-                        <Button>Apply for Documents</Button>
-                        <Button>Get Documents</Button>
+                        <Button onClick={() => router.push('/getdocs')}>Apply for Documents</Button>
+                        <Button onClick={() => router.push('/registerdocs')}>Get Documents</Button>
                         <Button>Pay Bills</Button>
                         <Button>Tourist Places</Button>
                         <Button>Public Transport Route</Button>
@@ -54,7 +56,7 @@ export default function Dashboard() {
             </Button>
             </CardFooter>
         </Card>
-
+        </ProtectedRoute>
         </>
     )
 }
