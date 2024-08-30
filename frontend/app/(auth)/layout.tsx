@@ -1,6 +1,6 @@
 import { UserProvider } from '@/context/userContext'
 import { Inter } from "next/font/google";
-
+import { ProtectedRoute } from '@/components/protectedRoute';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,14 +11,12 @@ export default async function AuthLayout({
 }) {
 
   return (
+    <ProtectedRoute>
     <UserProvider>
-        <div>
-          <div className=' text-red-50'>pokie</div>
             <main className={inter.className}>
                {children} 
             </main>
-        </div>
         </UserProvider>
-
+        </ProtectedRoute>
   )
 }
