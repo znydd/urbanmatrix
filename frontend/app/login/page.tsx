@@ -18,9 +18,10 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { access_token } = await login(email, password);
-      localStorage.setItem('token', access_token);    
-      router.push('/dashboard');
+      const { access_token, role } = await login(email, password);
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('role', role);
+      role === 'admin' ? router.push('/adminDashboard') : router.push('/dashboard');
     } catch (err) {
       setError('Login failed. Please check your credentials.');
     }
