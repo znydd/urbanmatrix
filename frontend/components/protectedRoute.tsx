@@ -19,7 +19,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }, [isAuthenticated, isLoading, router])
 
   if (isLoading) {
-    return <Progress value={33} />
+    return <div className=' flex flex-row min-h-screen justify-center items-center '><Progress value={33} /></div>
   }
   
   if (!isAuthenticated) {
