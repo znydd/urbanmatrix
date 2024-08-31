@@ -17,14 +17,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const fetchData = async () => {
       
       try {
+        
         if(!userInfo){
         const data: UserInfo = await getUserInfo();
         setUserInfo(data);
         }
       } catch (error) {
         console.error('Error fetching user info:', error);
-      }
-    };
+      }}
 
     fetchData();
   }, []);
