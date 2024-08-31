@@ -37,9 +37,3 @@ export const login = async (email: string, password: string) => {
   const response = await api.post('api/auth/login', loginData);
   return response.data;
 };
-
-
-export const fetchProtectedData = async () => {
-  const response = await api.get('/user');
-  return response.data;
-};
