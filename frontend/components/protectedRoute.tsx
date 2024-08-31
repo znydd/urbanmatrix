@@ -4,6 +4,9 @@
 import { useRouter } from 'next/navigation'
 import { useAuth } from "../hooks/useAuth"
 import { useEffect } from 'react'
+import { Progress } from "@/components/ui/progress"
+
+
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -16,7 +19,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }, [isAuthenticated, isLoading, router])
 
   if (isLoading) {
-    return <div>Loading...</div> // or a proper loading spinner component
+    return <Progress value={33} />
   }
   
   if (!isAuthenticated) {
