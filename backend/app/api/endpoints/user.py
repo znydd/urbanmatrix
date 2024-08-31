@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends
-import json
 from app.schema.user import UserInfo
 from app.db.databse import get_db
 from app.utils.security import get_current_user
