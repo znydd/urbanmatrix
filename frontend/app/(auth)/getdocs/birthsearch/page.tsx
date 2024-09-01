@@ -11,33 +11,33 @@ import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
 
 
-export default function BirthSearch(){
-    const userInfo = useUser()
-    const router = useRouter();
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            router.push('/');
-        }
-    }, []);
-
-    console.log(userInfo)
-    const logout = () => {
-        localStorage.removeItem('token');
-        router.push('/');
+export default function BirthSearch() {
+  const userInfo = useUser()
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/');
     }
+  }, []);
 
-    return(<>
-                <ProtectedRoute>
-                <Card className="w-full min-h-screen mx-auto px-10">
-                    <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:gap-4 sm:items-center sm:space-y-0">
-                        <CardTitle className="text-2xl font-bold"><Link href={"/dashboard"} className=' text-teal-500'>Dashboard</Link> / <Link href={"/getdocs"}>Get Documents/ Death Certificate</Link></CardTitle>
-                        <div className='flex space-x-2'>
-                            <Button variant="outline">{userInfo ? `${userInfo.name}` : 'Loading...'}</Button>
-                            <Button variant="outline">{userInfo ? `${userInfo.email}` : 'Loading...'}</Button>
-                        </div>
-                    </CardHeader>
-    <Card>
+  console.log(userInfo)
+  const logout = () => {
+    localStorage.removeItem('token');
+    router.push('/');
+  }
+
+  return (<>
+    <ProtectedRoute>
+      <Card className="w-full min-h-screen mx-auto px-10">
+        <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:gap-4 sm:items-center sm:space-y-0">
+          <CardTitle className="text-2xl font-bold"><Link href={"/dashboard"} className=' text-teal-500'>Dashboard</Link> / <Link href={"/getdocs"}>Get Documents/ Death Certificate</Link></CardTitle>
+          <div className='flex space-x-2'>
+            <Button variant="outline">{userInfo ? `${userInfo.name}` : 'Loading...'}</Button>
+            <Button variant="outline">{userInfo ? `${userInfo.email}` : 'Loading...'}</Button>
+          </div>
+        </CardHeader>
+        <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2 mb-4">
               <div className="relative flex-grow">
@@ -65,9 +65,9 @@ export default function BirthSearch(){
           </CardContent>
         </Card>
         <Button className=' bg-red-500 mt-4' onClick={logout}>
-                        Logout
-                    </Button>
-                </Card>
-            </ProtectedRoute>
-    </>)
+          Logout
+        </Button>
+      </Card>
+    </ProtectedRoute>
+  </>)
 }

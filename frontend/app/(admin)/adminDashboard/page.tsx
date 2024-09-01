@@ -11,10 +11,27 @@ import { ProtectedRoute } from "@/components/protectedRoute"
 import { useEffect } from "react"
 
 export default function AdminDashboard(){
+    // birth certificate
     const [name, setName] = useState('');
     const [father, setFather] = useState('');
     const [mother, setMother] = useState('');
     const [address, setAddress] = useState('');
+    const [date, setDate] = useState('')
+
+    // nid
+    const [nidName, setNidName] = useState('');
+    const [nidFather, setNidFather] = useState('');
+    const [nidMother, setNidMother] = useState('');
+    const [nidAddress, setNidAddress] = useState('');
+    const [nidEmail, setNidEmail] = useState('')
+
+    // death certificate
+    const [deathName, setDeathName] = useState('');
+    const [deathFather, setDeathFather] = useState('');
+    const [deathMother, setDeathMother] = useState('');
+    const [deathAddress, setDeathAddress] = useState('');
+    const [deathDate, setDeathDate] = useState('')
+
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const router = useRouter()
@@ -37,7 +54,9 @@ export default function AdminDashboard(){
     return(
         <>
         <ProtectedRoute>
-        <Card className="mx-auto max-w-sm">
+      <div className=" p-4">  
+      <Card className=" flex flex-row p-2">
+        <Card className="mx-auto">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Birth Certificate Generator</CardTitle>
           <CardDescription>Enter users credentials to create Birth certificate</CardDescription>
@@ -79,6 +98,17 @@ export default function AdminDashboard(){
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="dob">Date of Birth</Label>
+                <Input
+                  id="dob"
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  placeholder="Debu Saha"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="address">Address</Label>
                 <Input
                   id="address"
@@ -98,9 +128,189 @@ export default function AdminDashboard(){
           </form>
         </CardContent>
       </Card>
+      <Card className="mx-auto max-w-sm">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold">NID Generator</CardTitle>
+          <CardDescription>Enter users credentials to create NID</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={() => console.log(nidName)}>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  value={nidName}
+                  onChange={(e) => setNidName(e.target.value)}
+                  type="text"
+                  placeholder="Ilham Harun"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="father">Fahters Name</Label>
+                <Input
+                  id="father"
+                  type="text"
+                  value={nidFather}
+                  onChange={(e) => setNidFather(e.target.value)}
+                  placeholder="Rohon Saha"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="mother">Mothers Name</Label>
+                <Input
+                  id="mother"
+                  type="text"
+                  value={nidMother}
+                  onChange={(e) => setNidMother(e.target.value)}
+                  placeholder="Debu Saha"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={nidEmail}
+                  onChange={(e) => setNidEmail(e.target.value)}
+                  placeholder="abc@gmail.com"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="address">Address</Label>
+                <Input
+                  id="address"
+                  type="text"
+                  value={nidAddress}
+                  onChange={(e) => setNidAddress(e.target.value)}
+                  placeholder="Badda, Dhaka-1212"
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                Create NID
+              </Button>
+              {success && <p>{success}</p>}
+              {error && <p>{error}</p>}
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+      <Card className="mx-auto max-w-sm">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold">Death Certificate Generator</CardTitle>
+          <CardDescription>Enter users credentials to create Death certificate</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={() => console.log(deathName)}>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  value={deathName}
+                  onChange={(e) => setDeathName(e.target.value)}
+                  type="text"
+                  placeholder="Ilham Harun"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="father">Fahters Name</Label>
+                <Input
+                  id="father"
+                  type="text"
+                  value={deathFather}
+                  onChange={(e) => setDeathFather(e.target.value)}
+                  placeholder="Rohon Saha"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="mother">Mothers Name</Label>
+                <Input
+                  id="mother"
+                  type="text"
+                  value={deathMother}
+                  onChange={(e) => setDeathMother(e.target.value)}
+                  placeholder="Debu Saha"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="dob">Date of Death</Label>
+                <Input
+                  id="dob"
+                  type="date"
+                  value={deathDate}
+                  onChange={(e) => setDeathDate(e.target.value)}
+                  placeholder="Debu Saha"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="address">Address</Label>
+                <Input
+                  id="address"
+                  type="text"
+                  value={deathAddress}
+                  onChange={(e) => setDeathAddress(e.target.value)}
+                  placeholder="Badda, Dhaka-1212"
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                Create Death Certificate
+              </Button>
+              {success && <p>{success}</p>}
+              {error && <p>{error}</p>}
+            </div>
+          </form>
+        </CardContent>
+      </Card>
       <Button className=' bg-red-500' onClick={logout}>
                 Logout
-            </Button>
+      </Button>
+      </Card>
+      <Card className=" p-8 w-full mt-4">
+      <Card className=' w-full'>
+                      <CardHeader>
+                          <CardTitle className="text-lg">Request</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                          {[
+                              { name: "Rohan Saha", type: "Birth Certificate" },
+                              { name: "Harun Ilham", type: "Birth Certificate" },
+                              { name: "Abu Mia", type: "Death Certificate" },
+                              { name: "Sohel Rana", type: "Birth Certificate" },
+                          ].map((doc, index) => (
+                              <div
+                                  key={index}
+                                  className={`flex justify-between items-center p-2 rounded-md ${doc.type === "Death Certificate" ? "bg-yellow-100" : "bg-green-100"
+                                      }`}
+                              >
+                                  <div>
+                                      <p className="font-medium">{doc.type}</p>
+                                      <p className="text-sm text-gray-600">{doc.name}</p>
+                                  </div>
+                                  <div>
+                                  <Button className=" mr-2 bg-green-500" variant="outline" size="sm">
+                                    Approve
+                                  </Button>
+                                  <Button className=" bg-red-500"variant="outline" size="sm">
+                                      Decline
+                                  </Button>
+                                  </div>
+                              </div>
+                          ))}
+                      </CardContent>
+      </Card>
+      </Card>
+      </div>
             </ProtectedRoute>
         </>
     )
