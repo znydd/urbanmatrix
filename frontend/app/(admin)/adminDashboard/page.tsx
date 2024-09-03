@@ -4,8 +4,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import { createBithCertificate } from "@/utils/adminApi"
+import React, { useState } from "react"
+import { createBithCertificate, createNid, createDeathCertificate } from "@/utils/adminApi"
 import { useRouter } from "next/navigation"
 import { ProtectedRoute } from "@/components/protectedRoute"
 import { useEffect } from "react"
@@ -22,21 +22,29 @@ export default function AdminDashboard(){
     const [nidName, setNidName] = useState('');
     const [nidFather, setNidFather] = useState('');
     const [nidMother, setNidMother] = useState('');
-    const [nidAddress, setNidAddress] = useState('');
     const [nidEmail, setNidEmail] = useState('')
+    const [nidBC, setNidBC] = useState('')
+    const [nidDob, setNidDob] = useState('')
+    const [nidAddress, setNidAddress] = useState('');
 
     // death certificate
     const [deathName, setDeathName] = useState('');
     const [deathFather, setDeathFather] = useState('');
     const [deathMother, setDeathMother] = useState('');
-    const [deathAddress, setDeathAddress] = useState('');
     const [deathDate, setDeathDate] = useState('')
+    const [deathBC, setDeathBC] = useState('')
+    const [deathAddress, setDeathAddress] = useState('');
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+
+    const [nidError, setNidError] = useState('');
+    const [nidSuccess, setNidSuccess] = useState('');
+
+    const [deathError, setDeathError] = useState('');
+    const [deathSuccess, setDeathSuccess] = useState('');
     const router = useRouter()
 
-    useEffect
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -46,11 +54,35 @@ export default function AdminDashboard(){
           setError('Login failed. Please check your credentials.');
         }
       };
+      const handleNidSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+        const resp = await createNid(nidName, nidFather, nidMother, nidEmail, nidDob, nidBC, nidAddress)
+        resp ? setNidSuccess("Nid Created") : setNidError('Failed') 
+        } catch (err) {
+          setNidError('Login failed. Please check your credentials.');
+        }
+      };
+
+      const handleDeathCertSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+        const resp = await createDeathCertificate(deathName, deathFather, deathMother, deathDate, deathBC, deathAddress)
+        console.log(resp)
+        resp ? setDeathSuccess("Death Certificate Created") : setDeathError('Failed') 
+        } catch (err) {
+          setDeathError('Login failed. Please check your credentials.');
+        }
+      };
+
       const logout = () => {
         localStorage.removeItem('token');
         router.push('/');
     }
 
+
+
+    
     return(
         <>
         <ProtectedRoute>
@@ -134,7 +166,7 @@ export default function AdminDashboard(){
           <CardDescription>Enter users credentials to create NID</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={() => console.log(nidName)}>
+          <form onSubmit={handleNidSubmit}>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
@@ -181,6 +213,27 @@ export default function AdminDashboard(){
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="dob">Date of Birth</Label>
+                <Input
+                  id="nidDob"
+                  type="date"
+                  value={nidDob}
+                  onChange={(e) => setNidDob(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="nidBC">Birth Certificate No.</Label>
+                <Input
+                  id="nidBC"
+                  type="text"
+                  value={nidBC}
+                  onChange={(e) => setNidBC(e.target.value)}
+                  placeholder="100-012"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="address">Address</Label>
                 <Input
                   id="address"
@@ -194,8 +247,8 @@ export default function AdminDashboard(){
               <Button type="submit" className="w-full">
                 Create NID
               </Button>
-              {success && <p>{success}</p>}
-              {error && <p>{error}</p>}
+              {nidSuccess && <p>{success}</p>}
+              {nidError && <p>{error}</p>}
             </div>
           </form>
         </CardContent>
@@ -206,7 +259,7 @@ export default function AdminDashboard(){
           <CardDescription>Enter users credentials to create Death certificate</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={() => console.log(deathName)}>
+          <form onSubmit={handleDeathCertSubmit}>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
@@ -253,6 +306,17 @@ export default function AdminDashboard(){
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="deathBC">Birth Certificate No.</Label>
+                <Input
+                  id="deathBC"
+                  type="text"
+                  value={deathBC}
+                  onChange={(e) => setDeathBC(e.target.value)}
+                  placeholder="100-012"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="address">Address</Label>
                 <Input
                   id="address"
@@ -266,8 +330,8 @@ export default function AdminDashboard(){
               <Button type="submit" className="w-full">
                 Create Death Certificate
               </Button>
-              {success && <p>{success}</p>}
-              {error && <p>{error}</p>}
+              {deathSuccess && <p>{deathSuccess}</p>}
+              {deathError && <p>{deathError}</p>}
             </div>
           </form>
         </CardContent>
@@ -311,7 +375,7 @@ export default function AdminDashboard(){
       </Card>
       </Card>
       </div>
-            </ProtectedRoute>
+          </ProtectedRoute>
         </>
     )
-}
+};
