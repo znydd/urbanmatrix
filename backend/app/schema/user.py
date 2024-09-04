@@ -5,4 +5,3 @@ class UserInfo(BaseModel):
     email: EmailStr
     birth_cert: str | None
     nid: str | None
-    bidder: bool
