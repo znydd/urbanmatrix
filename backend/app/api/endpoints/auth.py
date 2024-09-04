@@ -66,4 +66,4 @@ async def signup(name: Annotated[str,Form()],
         
         print(access_token)
         
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "role": "user"}

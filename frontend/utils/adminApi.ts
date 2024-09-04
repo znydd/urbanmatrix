@@ -27,19 +27,25 @@ const setAuthToken = (token: string | null) => {
 };
 
 
-export const createBithCertificate = async (name: string, father: string, mother: string, address: string) => {
+export const createBithCertificate = async (name: string, father: string, mother: string, dob:string, address: string) => {
     const token = localStorage.getItem('token')
-    console.log(token)
     setAuthToken(token)
     const user_info_payload= {
         name: name,
         father: father,
         mother: mother, 
+        dob: dob,
         address: address
     }
-    const response = await api.post('api/admin/createbirthcert', user_info_payload);
-    const birth_cert_info = response.data
-    return birth_cert_info;
+    try {
+      const response = await api.post('api/admin/createbirthcert', user_info_payload);
+      return response.statusText
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorMessage: string = error.response.data.detail || 'Api failed for create birth certificate';
+        return errorMessage
+    }
+  }
   };
 
 export const createNid = async (name: string, father: string, mother: string, email: string, dob: string, birth_cert_no: string, address: string) => {
@@ -57,7 +63,7 @@ export const createNid = async (name: string, father: string, mother: string, em
     }
     try {
       const response = await api.post('api/admin/createnid', user_info_payload);
-      return response
+      return response.statusText
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         const errorMessage: string = error.response.data.detail || 'Api failed for create nid';
@@ -80,7 +86,7 @@ export const createNid = async (name: string, father: string, mother: string, em
     }
     try {
       const response = await api.post('api/admin/createdeathcert', user_info_payload);
-      return response
+      return response.statusText
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 409) {
         const errorMessage: string = error.response.data.detail || 'Conflict occurred';
