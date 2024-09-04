@@ -15,8 +15,8 @@ export default function AdminDashboard(){
     const [name, setName] = useState('');
     const [father, setFather] = useState('');
     const [mother, setMother] = useState('');
-    const [address, setAddress] = useState('');
     const [date, setDate] = useState('')
+    const [address, setAddress] = useState('');
 
     // nid
     const [nidName, setNidName] = useState('');
@@ -48,19 +48,49 @@ export default function AdminDashboard(){
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-        const resp = await createBithCertificate(name, father, mother, address)
-        resp ? setSuccess("Birth Certificate Created") : setSuccess('Failed') 
+        const resp = await createBithCertificate(name, father, mother, date, address)
+        console.log(resp)
+        resp === 'OK' ? setSuccess("Birth Certificate Created") : setSuccess('Failed') 
+        if(resp){
+          setName('')
+          setMother('')
+          setFather('')
+          setDate('')
+          setAddress('')
+          setTimeout(() => {
+            setSuccess('')
+        }, 2000)
+        }
         } catch (err) {
           setError('Login failed. Please check your credentials.');
+          setTimeout(() => {
+            setError('')
+          }, 2000)
+          
         }
       };
+
       const handleNidSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
         const resp = await createNid(nidName, nidFather, nidMother, nidEmail, nidDob, nidBC, nidAddress)
-        resp ? setNidSuccess("Nid Created") : setNidError('Failed') 
+        resp === "OK" ? setNidSuccess("Nid Created") : setNidError('Failed') 
+        if(resp){
+          setNidName('')
+          setNidFather('')
+          setNidMother('')
+          setNidBC('')
+          setNidAddress('')
+          setNidDob('')
+          setNidEmail('')
+          setTimeout(() => {
+            setNidSuccess('')
+        }, 2000)
+        }
         } catch (err) {
-          setNidError('Login failed. Please check your credentials.');
+          setTimeout(() => {
+            setNidError('Login failed. Please check your credentials.');
+        }, 2000)
         }
       };
 
@@ -68,10 +98,22 @@ export default function AdminDashboard(){
         e.preventDefault();
         try {
         const resp = await createDeathCertificate(deathName, deathFather, deathMother, deathDate, deathBC, deathAddress)
-        console.log(resp)
-        resp ? setDeathSuccess("Death Certificate Created") : setDeathError('Failed') 
+        resp === "OK" ? setDeathSuccess("Death Certificate Created") : setDeathError('Failed') 
+        if(resp){
+          setDeathName("")
+          setDeathFather("")
+          setDeathMother("")
+          setDeathDate("")
+          setDeathBC("")
+          setDeathAddress("")
+          setTimeout(() => {
+            setDeathSuccess('')
+        }, 2000)
+        }
         } catch (err) {
-          setDeathError('Login failed. Please check your credentials.');
+          setTimeout(() => {
+            setDeathError('Login failed. Please check your credentials.');
+        }, 2000)
         }
       };
 
