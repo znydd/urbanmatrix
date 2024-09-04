@@ -8,7 +8,7 @@ from app.utils.security import get_current_user
 
 
 
-router = router = APIRouter()
+router = APIRouter()
 
 
 @router.post('/createbirthcert', response_model=BirthCert)
