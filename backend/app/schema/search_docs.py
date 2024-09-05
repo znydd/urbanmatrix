@@ -5,6 +5,7 @@ class BirthCertificate(BaseModel):
 
 class BirthCertResp(BirthCertificate):
     name: str
+    file: str
 
 
 class DeathCertificate(BaseModel):
@@ -12,3 +13,4 @@ class DeathCertificate(BaseModel):
 
 class DeathCertResp(DeathCertificate):
     name: str
+    file: str
