@@ -289,8 +289,8 @@ export default function AdminDashboard(){
               <Button type="submit" className="w-full">
                 Create NID
               </Button>
-              {nidSuccess && <p>{success}</p>}
-              {nidError && <p>{error}</p>}
+              {nidSuccess && <p>{nidSuccess}</p>}
+              {nidError && <p>{nidError}</p>}
             </div>
           </form>
         </CardContent>
