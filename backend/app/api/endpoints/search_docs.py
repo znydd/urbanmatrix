@@ -10,15 +10,16 @@ router = APIRouter()
 
 
 @router.post("/birthcert", response_model=BirthCertResp)
-async def serach_birth_certificate(birth_cert_no: BirthCertificate, db = Depends(get_db),current_user: dict = Depends(get_current_user)):
+async def serach_birth_certificate(birth_cert_no: BirthCertificate, db = Depends(get_db), current_user: dict = Depends(get_current_user)):
     
     cursor = db.cursor()
-    cursor.execute("SELECT birth_cert_no, name FROM birth_certificate WHERE birth_cert_no = (%s)", (int(birth_cert_no.birth_cert_no),))
+    cursor.execute("SELECT birth_cert_no, name, file FROM birth_certificate WHERE birth_cert_no = (%s)", (int(birth_cert_no.birth_cert_no),))
     birth_cert = cursor.fetchone()
     if birth_cert:
         birth_cert_obj = BirthCertResp(
             birth_cert_no=birth_cert[0],
-            name=birth_cert[1]
+            name=birth_cert[1],
+            file=birth_cert[2].split("/")[2]
         )
         cursor.close()
         return birth_cert_obj
@@ -30,12 +31,13 @@ async def serach_birth_certificate(birth_cert_no: BirthCertificate, db = Depends
 async def serach_death_certificate(death_cert_no: DeathCertificate, db = Depends(get_db),current_user: dict = Depends(get_current_user)):
     
     cursor = db.cursor()
-    cursor.execute("SELECT death_cert_no, name FROM death_certificate WHERE death_cert_no = (%s)", (int(death_cert_no.death_cert_no),))
+    cursor.execute("SELECT death_cert_no, name, file FROM death_certificate WHERE death_cert_no = (%s)", (int(death_cert_no.death_cert_no),))
     death_cert = cursor.fetchone()
     if death_cert:
         death_cert_obj = DeathCertResp(
             death_cert_no=death_cert[0],
-            name=death_cert[1]
+            name=death_cert[1],
+            file=death_cert[2].split("/")[2]
         )
         cursor.close()
         return death_cert_obj
