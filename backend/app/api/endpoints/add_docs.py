@@ -16,6 +16,7 @@ async def add_birth_certificate(birth_cert_no: str,  db = Depends(get_db), curre
     if not user_id:
         raise HTTPException(status_code=500)
     return user_id
+
     
 @router.post("/deathcert/{death_cert_no}")
 async def add_death_certificate(death_cert_no: str,  db = Depends(get_db), current_user: dict = Depends(get_current_user)):
