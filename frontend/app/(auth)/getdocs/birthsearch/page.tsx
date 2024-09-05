@@ -11,7 +11,7 @@ import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
 import { searchBirthCert } from "@/utils/searchApi";
 import { downloadBirthCert } from "@/utils/downloadApi";
-
+import { addBirthCert } from "@/utils/addApi";
 
 export default function BirthSearch() {
   const userInfo = useUser();
@@ -68,6 +68,14 @@ export default function BirthSearch() {
     }
   }
 
+  const handleAdd = async () => {
+    try {
+      const user_id = await addBirthCert(birthNo)
+      console.log(user_id)
+    } catch (error) {
+      console.log("couldn't add birth certificate")
+    }
+  }
 
 
   const logout = () => {
@@ -102,7 +110,7 @@ export default function BirthSearch() {
                   <p className="text-sm text-gray-600">{name ? name : "loading.."}</p>
                 </div>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm">
+                  <Button onClick={handleAdd} variant="outline" size="sm">
                     Add
                   </Button>
                <Button onClick={handleDownload} variant="outline" size="sm">

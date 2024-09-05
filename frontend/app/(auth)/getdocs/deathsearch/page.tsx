@@ -11,7 +11,7 @@ import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
 import { searchDeathCert } from "@/utils/searchApi";
 import { downloadDeathCert } from "@/utils/downloadApi";
-
+import { addDeathCert } from "@/utils/addApi";
 
 export default function BirthSearch() {
   const userInfo = useUser();
@@ -66,6 +66,14 @@ export default function BirthSearch() {
     }
   }
 
+  const handleAdd = async () => {
+    try {
+      const user_id = await addDeathCert(deathNo) 
+      console.log(user_id)
+    } catch (error) {
+      console.error("couldn't add death cert")
+    }
+  }
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -100,7 +108,7 @@ export default function BirthSearch() {
                   <p className="text-sm text-gray-600">{name ? name : "loading.."}</p>
                 </div>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm">
+                  <Button onClick={handleAdd} variant="outline" size="sm">
                     Add
                   </Button>
                   <Button onClick={handleDownload} variant="outline" size="sm">
