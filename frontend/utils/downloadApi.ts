@@ -50,3 +50,19 @@ export const downloadDeathCert = async (filePath: string): Promise<string | unde
     }
   }
   };
+
+export const downloadNid = async (): Promise<string | undefined> => {
+  const token = localStorage.getItem('token')
+  setAuthToken(token)
+  try {
+    const response = await api.get("api/download/nid", {responseType: 'blob'});
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    console.log(url)
+    return url
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      const errorMessage: string = error.response.data.detail || 'NID Not found';
+      return errorMessage
+  }
+}
+};

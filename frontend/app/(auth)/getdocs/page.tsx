@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { useUser } from '@/context/userContext'
 import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
+import { downloadNid } from '@/utils/downloadApi';
 
 export default function GetDocs() {
     const [error, setError] = useState('');
@@ -21,6 +22,31 @@ export default function GetDocs() {
         }
     }, []);
 
+
+
+    const handleDownload = async () => {
+        try {
+          const url = await downloadNid()
+          if (typeof url !== 'string') {
+            console.error('Download URL is undefined or not a string');
+            return;
+          }
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', "nid.png");
+          document.body.appendChild(link);
+          link.click();
+          
+          // Clean up
+          window.URL.revokeObjectURL(url);
+          link.remove();
+          
+        } catch (error) {
+          console.error('Error downloading file:', error);
+        }
+      }
+
+      
     console.log(userInfo)
     const logout = () => {
         localStorage.removeItem('token');
@@ -47,7 +73,7 @@ export default function GetDocs() {
                                             <Button onClick={() => router.push("/getdocs/birthsearch")}>Birth Certificate</Button>
                                             <Button onClick={() => router.push("/getdocs/deathsearch")}>Death Certificate</Button>
                                         </div>
-                                        <Button className=' my-4'>Download NID</Button>
+                                        <Button onClick={handleDownload} className=' my-4'>Download NID</Button>
                                         <p className="text-sm text-red-500 mt-4">*You can only get your NID not others</p>
                                     </div>
                                 </div>
