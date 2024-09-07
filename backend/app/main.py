@@ -25,7 +25,6 @@ def read_items():
 async def download_image():
     file_path = "docsbucket/birth_certificate/100005_birth_certificate.png"
     return FileResponse(file_path, media_type="application/octet-stream", filename="nabil_bc.png")
-    pass
 
 
 @app.get("/user")
