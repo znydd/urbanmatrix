@@ -4,11 +4,12 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, ChangeEvent, FormEvent } from "react"
 import { useUser } from '@/context/userContext'
 import { useRouter } from 'next/navigation';
 import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
+import { registerBithCert } from "@/utils/registerdocsApi"
 
 
 
@@ -25,14 +26,47 @@ export default function BirthApply(){
     const [address, setAddress] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [file, setFile] = useState<File | null>(null)
 
 
-    const handleSubmit = () => {
-        
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      
+      if (!file) {
+        alert('Please select a file');
+        return;
+      }
+  
+      const submitData = new FormData();
+      submitData.append('name', name);
+      submitData.append('father', father);
+      submitData.append('mother', mother);
+      submitData.append('dob', date);
+      submitData.append('address', address);
+      submitData.append('file', file);
+
+      try {
+        const resp = await registerBithCert(submitData)
+        resp === "OK" ? setSuccess("From Submitted successfully") : setError("failed") 
+      } catch (error) {
+        console.error(error)
+      }
+
     }
+    
+      const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const files = event.target.files;
+      if (files && files.length > 0) {
+        setFile(files[0]);
+      }
+    };
+
+
 
     return(<>
     <Card className=" p-8">
+    
     <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:gap-4 sm:items-center sm:space-y-0">
                         <CardTitle className="text-2xl font-bold"><Link href={"/dashboard"} className=' text-teal-500'>Dashboard</Link> / <Link href={"/registerdocs"}>Apply for Documents</Link> / Apply for Birth Certificate</CardTitle>
                         <div className='flex space-x-2'>
@@ -41,14 +75,14 @@ export default function BirthApply(){
                         </div>
                     </CardHeader>
     
-        <Card className="mx-auto">
+        <Card className="mx-auto w-1/2">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Application From for Birth Certificate</CardTitle>
           <CardDescription>Enter credentials to apply for Birth certificate</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <div className="space-y-4">
+            <div className="space-y-4  grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
                 <Input
@@ -104,12 +138,21 @@ export default function BirthApply(){
                   required
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="attatchment">Attachment</Label>
+                <Input
+                  id="attatchment"
+                  type="file"
+                  onChange={handleFileChange}
+                  required
+                />
+              </div>
+            </div>
               <Button type="submit" className="w-full">
-                Create Birth Certificate
+                Submit Form
               </Button>
               {success && <p>{success}</p>}
               {error && <p>{error}</p>}
-            </div>
           </form>
         </CardContent>
       </Card>
