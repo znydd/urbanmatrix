@@ -4,11 +4,12 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useState, FormEvent } from "react"
 import { useUser } from '@/context/userContext'
 import { useRouter } from 'next/navigation';
 import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
+import { registerNid } from "@/utils/registerdocsApi"
 
 
 export default function DeathApply(){
@@ -29,9 +30,46 @@ export default function DeathApply(){
   const [nidError, setNidError] = useState('');
   const [nidSuccess, setNidSuccess] = useState('');
 
-    const handleSubmit = () => {
-        
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (!file) {
+      alert('Please select a file');
+      return;
     }
+    const submitData = new FormData();
+    submitData.append('name', nidName);
+    submitData.append('father', nidFather);
+    submitData.append('mother', nidMother);
+    submitData.append('dob', nidDob);
+    submitData.append('email', nidEmail);
+    submitData.append('birth_cert_no', nidBC);
+    submitData.append('address', nidAddress);
+    submitData.append('file', file);
+
+    try {
+      const resp = await registerNid(submitData)
+      resp === "OK" ? setNidSuccess("From Submitted successfully") : setNidError("failed") 
+      if(resp){
+        setNidName('')
+        setNidFather('')
+        setNidMother('')
+        setNidDob('')
+        setNidEmail('')
+        setNidBC('')
+        setNidAddress('')
+        setFile(null)
+        setTimeout(() => {
+          setNidSuccess('')
+      }, 2000)
+      }
+    } catch (error) {
+      setTimeout(() => {
+        setNidError(`${error}`)
+    }, 2000)
+    }
+
+  }
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
@@ -58,7 +96,7 @@ export default function DeathApply(){
         <CardContent>
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="space-y-2">
+              <div className="space-y-2 mt-4">
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
