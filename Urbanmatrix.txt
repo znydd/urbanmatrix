@@ -1,0 +1,93 @@
+Urbanmatrix
+
+CREATE TABLE unique_count (
+  birth_count BIGINT ,
+  death_count BIGINT ,
+  nid_count BIGINT 
+);
+
+INSERT INTO unique_count (birth_count, death_count, nid_count)
+VALUES (100001, 1000001, 10000001);
+
+CREATE TABLE death_certificate (
+  death_cert_no BIGINT PRIMARY KEY,
+  name TEXT,
+  file TEXT,
+  birth_cert_no BIGINT UNIQUE
+);
+
+CREATE TABLE user_death_junc (
+  death_cert_no BIGINT REFERENCES death_certificate(death_cert_no),
+  user_id INTEGER REFERENCES users(user_id)
+);
+
+
+
+CREATE TABLE birth_certificate (
+  birth_cert_no BIGINT PRIMARY KEY,
+  name TEXT,
+  file TEXT 
+);
+
+CREATE TABLE nid(
+  nid_no BIGINT PRIMARY KEY,
+  name TEXT,
+  email TEXT UNIQUE,
+  file TEXT,
+  birth_cert_no BIGINT UNIQUE 
+);
+
+
+
+CREATE TABLE user_birth_junc (
+  birth_cert_no BIGINT REFERENCES birth_certificate(birth_cert_no),
+  user_id INTEGER REFERENCES users(user_id)
+);
+
+
+CREATE TABLE birth_request(
+  user_id INTEGER REFERENCES users(user_id),
+  req_id UUID PRIMARY KEY,
+  approval_status BOOLEAN DEFAULT FALSE,
+  doc_path TEXT NOT NULL,
+  name TEXT NOT NULL,
+  father TEXT NOT NULL,
+  mother TEXT NOT NULL,
+  dob DATE NOT NULL,
+  address TEXT NOT NULL
+);
+
+CREATE TABLE nid_request(
+  user_id INTEGER REFERENCES users(user_id),
+  req_id UUID PRIMARY KEY,
+  approval_status BOOLEAN DEFAULT FALSE,
+  doc_path TEXT NOT NULL,
+  name TEXT NOT NULL,
+  father TEXT NOT NULL,
+  mother TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  dob DATE NOT NULL,
+  birth_cert_no BIGINT UNIQUE NOT NULL,
+  address TEXT NOT NULL
+);
+
+CREATE TABLE death_request(
+  user_id INTEGER REFERENCES users(user_id),
+  req_id UUID PRIMARY KEY,
+  approval_status BOOLEAN DEFAULT FALSE,
+  doc_path TEXT NOT NULL,
+  name TEXT NOT NULL,
+  father TEXT NOT NULL,
+  mother TEXT NOT NULL,
+  dod DATE NOT NULL,
+  birth_cert_no BIGINT UNIQUE NOT NULL,
+  address TEXT NOT NULL
+);
+
+Ages: adult -> birth_cert-> you must have a birth_cert -> just search for it and add
+      kids -> just apply 
+
+Name:197, 192
+f name:275, 228
+m name: 283, 264
+add:218, 301
