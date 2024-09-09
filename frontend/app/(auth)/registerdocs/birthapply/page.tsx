@@ -37,7 +37,6 @@ export default function BirthApply(){
         alert('Please select a file');
         return;
       }
-  
       const submitData = new FormData();
       submitData.append('name', name);
       submitData.append('father', father);
@@ -49,8 +48,21 @@ export default function BirthApply(){
       try {
         const resp = await registerBithCert(submitData)
         resp === "OK" ? setSuccess("From Submitted successfully") : setError("failed") 
+        if(resp){
+          setName('')
+          setMother('')
+          setFather('')
+          setDate('')
+          setAddress('')
+          setFile(null)
+          setTimeout(() => {
+            setSuccess('')
+        }, 2000)
+        }
       } catch (error) {
-        console.error(error)
+        setTimeout(() => {
+          setError(`${error}`)
+      }, 2000)
       }
 
     }
@@ -82,8 +94,8 @@ export default function BirthApply(){
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <div className="space-y-4  grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="space-y-2">
+            <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="space-y-2 mt-4">
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
