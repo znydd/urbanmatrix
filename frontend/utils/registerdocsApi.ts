@@ -35,3 +35,36 @@ export const registerBithCert = async (formData: FormData) => {
     }
   }
   };
+
+
+  export const registerNid = async (formData: FormData) => {
+    const token = localStorage.getItem('token')
+    setAuthToken(token)
+   
+    try {
+      const response = await api.post('api/registerdocs/nid', formData);
+      console.log(response.statusText)
+      return response.statusText
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorMessage: string = error.response.data.detail || 'Api failed for create NID';
+        return errorMessage
+    }
+  }
+  };
+
+  export const registerDeathCert = async (formData: FormData) => {
+    const token = localStorage.getItem('token')
+    setAuthToken(token)
+   
+    try {
+      const response = await api.post('api/registerdocs/deathcert', formData);
+      console.log(response.statusText)
+      return response.statusText
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorMessage: string = error.response.data.detail || 'Api failed for create Death Certificate';
+        return errorMessage
+    }
+  }
+  };
