@@ -1,6 +1,7 @@
 venv
 .env
 __pycache__
+
 docsbucket/nid/*
 !docsbucket/nid/.gitkeep
 
@@ -10,5 +11,11 @@ docsbucket/birth_certificate/*
 docsbucket/death_certificate/*
 !docsbucket/death_certificate/.gitkeep
 
-uploads/*
-!uploads/.gitkeep
+req_files/nid/*
+!req_files/nid/.gitkeep
+
+req_files/birth_cert/*
+!req_files/birth_cert/.gitkeep
+
+req_files/death_cert/*
+!req_files/death_cert/.gitkeep

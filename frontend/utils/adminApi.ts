@@ -4,13 +4,6 @@ import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL; 
 
-// export interface UserInfo {
-//   name: string;
-//   father: string;
-//   mother: string;
-//   address: string;
-// }
-
 const api = axios.create({
     baseURL: API_URL,
     headers: {
