@@ -4,12 +4,12 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useState, ChangeEvent } from "react"
+import { useState, ChangeEvent,FormEvent } from "react"
 import { useUser } from '@/context/userContext'
 import { useRouter } from 'next/navigation';
 import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
-
+import { registerDeathCert } from "@/utils/registerdocsApi"
 
 
 export default function DeathApply(){
@@ -29,10 +29,44 @@ export default function DeathApply(){
   const [file, setFile] = useState<File | null>(null)
 
 
-    const handleSubmit = () => {
-        
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    if (!file) {
+      alert('Please select a file');
+      return;
+    }
+    const submitData = new FormData();
+    submitData.append('name', deathName);
+    submitData.append('father', deathFather);
+    submitData.append('mother', deathMother);
+    submitData.append('dod', deathDate);
+    submitData.append('birth_cert_no', deathBC);
+    submitData.append('address', deathAddress);
+    submitData.append('file', file);
+
+    try {
+      const resp = await registerDeathCert(submitData)
+      resp === "OK" ? setDeathSuccess("From Submitted successfully") : setDeathError("failed") 
+      if(resp){
+        setDeathName('')
+        setDeathFather('')
+        setDeathMother('')
+        setDeathDate('')
+        setDeathBC('')
+        setDeathAddress('')
+        setFile(null)
+        setTimeout(() => {
+          setDeathSuccess('')
+      }, 2000)
+      }
+    } catch (error) {
+      setTimeout(() => {
+        setDeathError(`${error}`)
+    }, 2000)
     }
 
+  }
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files && files.length > 0) {
@@ -58,7 +92,7 @@ export default function DeathApply(){
         <CardContent>
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="space-y-2">
+              <div className="space-y-2 mt-4">
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
