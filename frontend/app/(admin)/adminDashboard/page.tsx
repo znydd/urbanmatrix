@@ -383,38 +383,8 @@ export default function AdminDashboard(){
       </Button>
       </Card>
       <Card className=" p-8 w-full mt-4">
-      <Card className=' w-full'>
-                      <CardHeader>
-                          <CardTitle className="text-lg">Request</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-2">
-                          {[
-                              { name: "Rohan Saha", type: "Birth Certificate" },
-                              { name: "Harun Ilham", type: "Birth Certificate" },
-                              { name: "Abu Mia", type: "Death Certificate" },
-                              { name: "Sohel Rana", type: "Birth Certificate" },
-                          ].map((doc, index) => (
-                              <div
-                                  key={index}
-                                  className={`flex justify-between items-center p-2 rounded-md ${doc.type === "Death Certificate" ? "bg-yellow-100" : "bg-green-100"
-                                      }`}
-                              >
-                                  <div>
-                                      <p className="font-medium">{doc.type}</p>
-                                      <p className="text-sm text-gray-600">{doc.name}</p>
-                                  </div>
-                                  <div>
-                                  <Button className=" mr-2 bg-green-500" variant="outline" size="sm">
-                                    Approve
-                                  </Button>
-                                  <Button className=" bg-red-500"variant="outline" size="sm">
-                                      Decline
-                                  </Button>
-                                  </div>
-                              </div>
-                          ))}
-                      </CardContent>
-      </Card>
+      <Button onClick={() => router.push("/adminDashboard/verifyregistration")} >Verify Registration Docs</Button>
+      
       </Card>
       </div>
           </ProtectedRoute>
