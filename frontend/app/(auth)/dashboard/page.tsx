@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { useUser } from '@/context/userContext'
 import { ProtectedRoute } from '@/components/protectedRoute'; 
 
+
 export default function Dashboard() {
     const [error, setError] = useState('');
     const router = useRouter();
@@ -39,11 +40,11 @@ export default function Dashboard() {
             <CardContent>
                 <Card className=' min-h-[650px] bg-slate-50'>
                     <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6">
-                        <Button className=' h-12'>Raise Issues</Button>
+                        <Button className=' h-12' onClick={() => router.push('/raiseissue')}>Raise Issues</Button>
                         <Button className=' h-12' onClick={() => router.push('/getdocs')}>Get Documents</Button>
                         <Button className=' h-12' onClick={() => router.push('/registerdocs')}>Apply for Documents</Button>
-                        <Button className=' h-12'>Pay Bills</Button>
-                        <Button className=' h-12'>Public Transport Route</Button>
+                        <Button className=' h-12' onClick={() => router.push('/paybill')}>Pay Bills</Button>
+                        <Button className=' h-12' onClick={() => router.push('/transportroute')}>Public Transport Route</Button>
                     </CardContent>
                 </Card>
             </CardContent>
