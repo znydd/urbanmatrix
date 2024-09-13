@@ -5,7 +5,7 @@ class CreateBirthCert(BaseModel):
     name: str
     father: str
     mother: str
-    dob: date
+    dob: date | None
     address: str
 
 class BirthCert(CreateBirthCert):
@@ -15,9 +15,9 @@ class CreateNid(BaseModel):
     name: str
     father: str
     mother: str
-    email: EmailStr
-    dob: date
-    birth_cert_no: str
+    email: EmailStr | None
+    dob: date | None
+    birth_cert_no: str | int | None
     address: str
 
 class Nid(CreateNid):
