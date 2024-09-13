@@ -5,7 +5,7 @@ from app.service.create_nid_card import create_nid_card
 from app.service.create_birth_cert import create_birth_certificate
 from app.service.create_death_cert import create_death_certificate
 from app.utils.security import get_current_user
-
+import os
 
 
 router = APIRouter()
@@ -103,3 +103,91 @@ async def create_death_cert(user_info: CreateDeathCert, db = Depends(get_db), cu
 
         print(file_path)
         return user_info
+
+
+@router.get("/allregreq")
+async def get_all_reg_req(db = Depends(get_db)):
+    
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM birth_request")
+    birth_req_form = cursor.fetchall()
+    birth_req_dict = [{"doc_type":"Birth Certificate",
+                       "req_id":req_form[1],
+                       "status":req_form[2],
+                       "file_path":req_form[3],
+                       "name":req_form[4],
+                       "father":req_form[5],
+                       "mother":req_form[6],
+                       "dob":req_form[7],
+                       "address":req_form[8]}
+                      for req_form in birth_req_form]
+    
+    
+    
+    cursor.execute("SELECT * FROM nid_request")
+    nid_req_form = cursor.fetchall()
+    nid_req_dict = [{"doc_type":"NID",
+                     "req_id":req_form[1],
+                     "status":req_form[2],
+                     "file_path":req_form[3],
+                     "name":req_form[4],
+                     "father":req_form[5],
+                     "mother":req_form[6],
+                     "email":req_form[7],
+                     "dob":req_form[8],
+                     "birth_cert_no":req_form[9],
+                     "address":req_form[10]}
+                    for req_form in nid_req_form]
+    
+    
+    cursor.execute("SELECT * FROM death_request")
+    death_req_form = cursor.fetchall()
+    death_req_dict = [{"doc_type":"Death Certificate",
+                       "req_id":req_form[1],
+                       "status":req_form[2],
+                       "file_path":req_form[3],
+                       "name":req_form[4],
+                       "father":req_form[5],
+                       "mother":req_form[6],
+                       "dod":req_form[7],
+                       "birth_cert_no":req_form[8],
+                       "address":req_form[9]}
+                      for req_form in death_req_form]
+        
+    all_req_form = birth_req_dict+nid_req_dict+death_req_dict
+    
+    
+    print(all_req_form)
+    return all_req_form
+
+
+@router.delete("/deletereq/{req_id_type}")
+async def birth_reg_req(req_id_type: str, db = Depends(get_db)):
+    print(req_id_type)
+    param = req_id_type.split("<>")
+    req_id = param[0]
+    doc_type = param[1]
+    print(req_id)
+    print(doc_type)
+    cursor = db.cursor()
+
+    if(doc_type == "Birth Certificate"):
+        cursor.execute("DELETE FROM birth_request WHERE req_id = %s RETURNING doc_path",(req_id,))
+        birth_req = cursor.fetchone()
+        os.remove(birth_req[0])
+        db.commit()
+        cursor.close()
+    elif(doc_type == "NID"):
+        cursor.execute("DELETE FROM nid_request WHERE req_id = %s RETURNING doc_path",(req_id,))
+        nid_req = cursor.fetchone()
+        os.remove(nid_req[0])
+        db.commit()
+        cursor.close()
+    elif(doc_type == "Death Certificate"):
+        cursor.execute("DELETE FROM death_request WHERE req_id = %s RETURNING doc_path",(req_id,))
+        death_req = cursor.fetchone()
+        os.remove(death_req[0])
+        db.commit()
+        cursor.close()
+
+    return req_id

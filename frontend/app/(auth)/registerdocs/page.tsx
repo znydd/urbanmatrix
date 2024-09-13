@@ -7,20 +7,33 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { useUser } from '@/context/userContext'
 import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
+import { Bell } from 'lucide-react';
+import { getNotification } from '@/utils/notificationApi';
 
 
 export default function RegisterDocs() {
     const [error, setError] = useState('');
     const router = useRouter();
     const userInfo = useUser()
+    const [notification, setNotification] = useState([])
+
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
             router.push('/');
         }
+        fetchNotification()
     }, []);
 
+    const fetchNotification = async () =>{
+        try {
+            const notifications = await getNotification()
+            setNotification(notifications) 
+        } catch (error) {
+            
+        }
+    }
     console.log(userInfo)
     const logout = () => {
         localStorage.removeItem('token');
@@ -41,25 +54,23 @@ export default function RegisterDocs() {
                     </CardHeader>
                     <CardContent>
                         <Card className=' min-h-[650px] bg-slate-50 flex flex-row'>
-                            <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-8 w-1/2">
+                            <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-8 w-2/3">
                                 <Button onClick={() => router.push('/registerdocs/birthapply')}>Apply for Birth Certificate</Button>
                                 <Button onClick={() => router.push('/registerdocs/nidapply')}>Apply for NID</Button>
                                 <Button onClick={() => router.push('/registerdocs/deathapply')}>Apply for Death Certificate</Button>
                             </CardContent>
-                            <CardContent className=' w-1/2 p-8'>
-                            {docs.map((doc, index) => (
+                            <CardContent className=' w-1/3 p-8'>
+                            {notification.map((msg, index) => (
                                         <div
                                             key={index}
-                                            className={`flex justify-between items-center p-2 rounded-md mb-2 ${doc.status === "declined" ? "bg-yellow-100" : "bg-green-100"
-                                                }`}
+                                            className={"flex justify-between items-center p-2 rounded-md mb-2 bg-green-100"
+                                                }
                                         >
                                             <div>
-                                                <p className="font-medium">{doc.status}</p>
-                                                <p className="text-sm text-gray-600">{doc.name}</p>
+                                            <Bell className=' mb-2' />
+                                                <p className="font-medium">{msg}</p>
                                             </div>
-                                            <Button variant="outline" size="sm">
-                                                Download
-                                            </Button>
+
                                         </div>
                                     ))}
                            </CardContent>

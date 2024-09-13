@@ -39,14 +39,11 @@ export default function Dashboard() {
             <CardContent>
                 <Card className=' min-h-[650px] bg-slate-50'>
                     <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6">
-                        <Button>Raise Issues</Button>
-                        <Button onClick={() => router.push('/getdocs')}>Get Documents</Button>
-                        <Button onClick={() => router.push('/registerdocs')}>Apply for Documents</Button>
-                        <Button>Pay Bills</Button>
-                        <Button>Tourist Places</Button>
-                        <Button>Public Transport Route</Button>
-                        <Button>Find Funeral Places</Button>
-                        <Button>E-tender</Button>
+                        <Button className=' h-12'>Raise Issues</Button>
+                        <Button className=' h-12' onClick={() => router.push('/getdocs')}>Get Documents</Button>
+                        <Button className=' h-12' onClick={() => router.push('/registerdocs')}>Apply for Documents</Button>
+                        <Button className=' h-12'>Pay Bills</Button>
+                        <Button className=' h-12'>Public Transport Route</Button>
                     </CardContent>
                 </Card>
             </CardContent>

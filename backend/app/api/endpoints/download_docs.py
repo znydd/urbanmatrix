@@ -33,3 +33,10 @@ async def download_nid_cert(db = Depends(get_db), current_user: dict = Depends(g
     
     print(file_path)
     return FileResponse(file_path, media_type="application/octet-stream", filename="nid.png")
+
+
+@router.get("/anydocs/{file_path}")
+async def download_any_file(file_path: str, current_user: dict = Depends(get_current_user)):
+    split = file_path.split("<>")
+    file_path = split[0]+"/"+split[1]+"/"+split[2]
+    return FileResponse(file_path, media_type="application/octet-stream", filename=f"{file_path.split("/")[2]}")
