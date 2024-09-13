@@ -28,8 +28,8 @@ class CreateDeathCert(BaseModel):
     name: str
     father: str
     mother: str
-    dod: date
-    birth_cert_no: str
+    dod: date | None
+    birth_cert_no: str | int | None
     address: str
 
 class DeathCert(CreateDeathCert):
