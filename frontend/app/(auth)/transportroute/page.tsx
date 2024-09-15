@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useUser } from '@/context/userContext'
 import { ProtectedRoute } from '@/components/protectedRoute';
 import Link from 'next/link'
@@ -13,25 +13,20 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    SelectGroup,
+    SelectLabel
 } from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { MapPin } from 'lucide-react';
+import { fetchAllStartingPoints, fetchPossibleDestination, fetchAllTransport } from '@/utils/transportApi';
 
-// Mock data for locations and routes
-const locations = ["City Center", "Airport", "University", "Shopping Mall", "Beach"]
-const mockRoutes = [
-    { type: "Bus", number: "101", duration: "30 min" },
-    { type: "Metro", number: "M1", duration: "15 min" },
-    { type: "Bus", number: "202", duration: "45 min" },
-    { type: "Metro", number: "M2", duration: "20 min" },
-    { type: "Metro", number: "M1", duration: "15 min" },
-    { type: "Bus", number: "202", duration: "45 min" },
-    { type: "Metro", number: "M2", duration: "20 min" },
-]
-interface Route {
+
+
+
+interface Dest {
+    route: number;
     type: string;
-    number: string;
-    duration: string;
+    dest: string[];
 }
 
 
@@ -41,7 +36,11 @@ export default function TransportRoute() {
     const userInfo = useUser()
     const [start, setStart] = useState("")
     const [destination, setDestination] = useState("")
-    const [routes, setRoutes] = useState<Route[]>([])
+    const [routes, setRoutes] = useState([])
+    const [startValues, setStartValues] = useState([])
+    const [destValues, setDestValues] = useState<Dest[]>([])
+    const [isLoading, setIsLoading] = useState(false)
+
 
     const logout = () => {
         localStorage.removeItem('token');
@@ -49,10 +48,68 @@ export default function TransportRoute() {
     }
 
 
-    const handleSearch = () => {
-        // In a real application, this would call an API to get actual routes
-        setRoutes(mockRoutes)
+    useEffect(() => {
+        getAllStartingPoints()
+    }, [])
+
+    const getAllStartingPoints = async () => {
+        try {
+            const respStartValues = await fetchAllStartingPoints()
+            if (respStartValues) {
+                setStartValues(respStartValues)
+            } else {
+                console.error('Unexpected response format for starting points')
+            }
+            console.log(respStartValues)
+            if (respStartValues) {
+                setStartValues(respStartValues)
+            }
+        } catch (error) {
+            console.error
+        }
+
     }
+
+
+
+    useEffect(() => {
+        getPossibleDestination()
+    }, [start])
+
+    const getPossibleDestination = async () => {
+        if(start){
+        try {
+            const respPossibleDestnation: Dest[] = await fetchPossibleDestination(start)
+            if (Array.isArray(respPossibleDestnation)) {
+                setDestValues(respPossibleDestnation)
+            } else {
+                console.error('Unexpected response format for possible destinations')
+                setDestValues([])
+            }
+
+            console.log(respPossibleDestnation)
+        } catch (error) {
+            console.error
+        }
+    }
+    }
+
+    const handleSearch = async () => {
+        // In a real application, this would call an API to get actual routes
+        try {
+            const respAllTransport = await fetchAllTransport(destination[0])
+            if (respAllTransport) {
+                setRoutes(respAllTransport)
+            }
+        } catch (error) {
+            console.error
+        }
+        console.log(destination[0])
+
+    }
+    console.log(destValues)
+    console.log(start)
+    console.log(destination)
 
 
     return (
@@ -75,31 +132,47 @@ export default function TransportRoute() {
                             </CardHeader>
                             <CardContent>
                                 <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
+
                                     <Select value={start} onValueChange={setStart}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Choose starting point" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {locations.map((location) => (
+                                            {startValues.map((location) => (
+
                                                 <SelectItem key={location} value={location}>
                                                     {location}
                                                 </SelectItem>
+
                                             ))}
                                         </SelectContent>
                                     </Select>
+
                                     <Select value={destination} onValueChange={setDestination}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Choose destination" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {locations.map((location) => (
-                                                <SelectItem key={location} value={location}>
-                                                    {location}
+                                            {destValues.length > 0 ? (
+                                                destValues.map((routeData) => (
+                                                    <SelectGroup key={routeData.route}>
+                                                        <SelectLabel>{`Route ${routeData.route} (${routeData.type})`}</SelectLabel>
+                                                        {routeData.dest.map((loc) => (
+                                                            <SelectItem key={`${routeData.route}-${loc}`} value={`${routeData.route}. ${loc}`}>
+                                                                {loc}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectGroup>
+                                                ))
+                                            ) : (
+                                                <SelectItem value="no-destinations" disabled>
+                                                    {isLoading ? "Loading destinations..." : "No destinations available"}
                                                 </SelectItem>
-                                            ))}
+                                            )}
                                         </SelectContent>
                                     </Select>
-                                    <Button onClick={handleSearch} className="w-full md:w-auto">Search</Button>
+
+                                    <Button onClick={handleSearch} className="w-full md:w-auto" disabled={!start || !destination}>Search</Button>
                                 </div>
 
                                 {routes.length > 0 && (
@@ -111,9 +184,9 @@ export default function TransportRoute() {
                                             <ScrollArea className="h-[200px]">
                                                 <ul className="space-y-2">
                                                     {routes.map((route, index) => (
-                                                        <li key={index} className="flex justify-between items-center p-2 bg-muted rounded-lg">
-                                                            <span className="font-medium">{route.type} {route.number}</span>
-                                                            <span className="text-muted-foreground">{route.duration}</span>
+                                                        <li key={index} className="flex justify-center items-center p-2 bg-muted rounded-lg">
+                                                            <span className="font-medium">{route}</span>
+                                                            {/* <span className="text-muted-foreground">{route.duration}</span> */}
                                                         </li>
                                                     ))}
                                                 </ul>
@@ -126,9 +199,9 @@ export default function TransportRoute() {
                     </div>
 
                 </Card>
-                    <Button className=' bg-red-500 mt-4' onClick={logout}>
-                        Logout
-                    </Button>
+                <Button className=' bg-red-500 mt-4' onClick={logout}>
+                    Logout
+                </Button>
             </ProtectedRoute>
         </>
     )
