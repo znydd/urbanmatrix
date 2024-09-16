@@ -136,3 +136,21 @@ export const removeReq = async (req_id: string, doc_type: string) => {
   }
 }
 }; 
+
+
+
+export const approveIssue = async (issue_id: number) => {
+  const token = localStorage.getItem('token')
+  setAuthToken(token)
+
+  try {
+      const response = await api.put(`api/admin/approveissue/${issue_id}`);
+      return response.data
+  } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+          const errorMessage: string = error.response.data.detail || "couldn't post issue";
+          return errorMessage
+      }
+  }
+
+}
