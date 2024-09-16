@@ -191,3 +191,14 @@ async def birth_reg_req(req_id_type: str, db = Depends(get_db)):
         cursor.close()
 
     return req_id
+
+
+@router.put("/approveissue/{issue_id}")
+async def approve_issue(issue_id: int, db = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    cursor = db.cursor()
+    cursor.execute("UPDATE issues SET issue_status = true WHERE issue_id = %s RETURNING issue_status", (issue_id,))
+    resp = cursor.fetchone()
+    db.commit()
+    cursor.close()
+    
+    return resp
