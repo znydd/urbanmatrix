@@ -25,7 +25,12 @@ export default function Dashboard() {
         localStorage.removeItem('token');
         router.push('/');
     }
-
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/');
+        }
+    }, []);
     return (
         <>
         <ProtectedRoute>

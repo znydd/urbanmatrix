@@ -383,7 +383,8 @@ export default function AdminDashboard(){
       </Button>
       </Card>
       <Card className=" p-8 w-full mt-4">
-      <Button onClick={() => router.push("/adminDashboard/verifyregistration")} >Verify Registration Docs</Button>
+      <Button className=" mr-4" onClick={() => router.push("/adminDashboard/verifyregistration")} >Verify Registration Docs</Button>
+      <Button onClick={() => router.push("/adminDashboard/verifyissues")} >Verify Raised Issues</Button>
       
       </Card>
       </div>
