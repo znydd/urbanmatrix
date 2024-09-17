@@ -37,7 +37,7 @@ export default function TransportRoute() {
     const [start, setStart] = useState("")
     const [destination, setDestination] = useState("")
     const [routes, setRoutes] = useState([])
-    const [startValues, setStartValues] = useState([])
+    const [startValues, setStartValues] = useState<string[]>([])
     const [destValues, setDestValues] = useState<Dest[]>([])
     const [isLoading, setIsLoading] = useState(false)
 
@@ -58,6 +58,7 @@ export default function TransportRoute() {
             if (respStartValues) {
                 setStartValues(respStartValues)
             } else {
+                setStartValues(["Loading.."])
                 console.error('Unexpected response format for starting points')
             }
             console.log(respStartValues)
@@ -83,8 +84,8 @@ export default function TransportRoute() {
             if (Array.isArray(respPossibleDestnation)) {
                 setDestValues(respPossibleDestnation)
             } else {
+                setDestValues([{route:0, type:"Loading..", dest:["Loading.."] }])
                 console.error('Unexpected response format for possible destinations')
-                setDestValues([])
             }
 
             console.log(respPossibleDestnation)
