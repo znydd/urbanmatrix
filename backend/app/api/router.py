@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.endpoints import auth, user, admin, search_docs, download_docs, add_docs, saved_docs, register_docs, notification, transport_route, raise_issue
+from app.api.endpoints import auth, user, admin, search_docs, download_docs, add_docs, saved_docs, register_docs, notification, transport_route, raise_issue, paybill
 
 api_router = APIRouter()
 
@@ -13,6 +13,7 @@ api_router.include_router(register_docs.router, prefix="/registerdocs", tags=["r
 api_router.include_router(notification.router, prefix="/user", tags=["user_notification"])
 api_router.include_router(transport_route.router, prefix="/transportroute", tags=["transport_route"])
 api_router.include_router(raise_issue.router, prefix="/raiseissue", tags=["raise_issue"])
+api_router.include_router(paybill.router, prefix="/paybill", tags=["paybill"])
 
 
 # Admin route
