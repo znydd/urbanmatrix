@@ -31,7 +31,13 @@ export default function PayBill() {
                             <Button variant="outline">{userInfo ? `${userInfo.email}` : 'Loading...'}</Button>
                         </div>
                     </CardHeader>
-                        
+                    <Card className=' min-h-[650px] bg-slate-50'>
+                    <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6">
+                        <Button className=' h-12' onClick={() => router.push('paybill/electricity')}>Electricity</Button>
+                        <Button className=' h-12' onClick={() => router.push('paybill/gas')}>Gas</Button>
+                        <Button className=' h-12' onClick={() => router.push('paybill/water')}>Water</Button>
+                    </CardContent>
+                </Card>
                     <Button className=' bg-red-500 mt-4' onClick={logout}>
                         Logout
                     </Button>
