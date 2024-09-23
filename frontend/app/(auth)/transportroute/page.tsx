@@ -121,10 +121,10 @@ export default function TransportRoute() {
                         <CardTitle className="text-2xl font-bold">
                             <Link href={"/dashboard"} className=' text-teal-500'>Dashboard</Link> / <Link href={"/getdocs"}>Transport Route</Link>
                         </CardTitle>
-                        <div className='flex space-x-2'>
-                            <Button variant="outline">{userInfo ? `${userInfo.name}` : 'Loading...'}</Button>
-                            <Button variant="outline">{userInfo ? `${userInfo.email}` : 'Loading...'}</Button>
-                        </div>
+                        <div className="flex flex-col justify-start border-2 p-2 border-gray-300 rounded">
+          <div className=' text-sm font-medium'>{userInfo ? `${userInfo.name}` : 'Loading...'}</div>
+          <div className=' text-sm font-medium'>{userInfo ? `${userInfo.email}` : 'Loading...'}</div>
+        </div>
                     </CardHeader>
                     <div className="mx-auto p-4">
                         <Card className="w-full max-w-2xl mx-auto">

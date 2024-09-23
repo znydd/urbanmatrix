@@ -112,10 +112,10 @@ export default function RaiseIssue() {
                         <CardTitle className="text-2xl font-bold">
                             <Link href={"/dashboard"} className=' text-teal-500'>Dashboard</Link> / <Link href={"/getdocs"}>Raise Issue</Link>
                         </CardTitle>
-                        <div className='flex space-x-2'>
-                            <Button variant="outline">{userInfo ? `${userInfo.name}` : 'Loading...'}</Button>
-                            <Button variant="outline">{userInfo ? `${userInfo.email}` : 'Loading...'}</Button>
-                        </div>
+                        <div className="flex flex-col justify-start border-2 p-2 border-gray-300 rounded">
+          <div className=' text-sm font-medium'>{userInfo ? `${userInfo.name}` : 'Loading...'}</div>
+          <div className=' text-sm font-medium'>{userInfo ? `${userInfo.email}` : 'Loading...'}</div>
+        </div>
                     </CardHeader>
                     <CardContent className='flex flex-row gap-2 h-[700px]'>
                         <Card className='w-1/2 p-4'>

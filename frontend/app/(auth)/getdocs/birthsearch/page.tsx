@@ -88,10 +88,10 @@ export default function BirthSearch() {
       <Card className="w-full min-h-screen mx-auto px-10">
         <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:gap-4 sm:items-center sm:space-y-0">
           <CardTitle className="text-2xl font-bold"><Link href={"/dashboard"} className=' text-teal-500'>Dashboard</Link> / <Link href={"/getdocs"}>Get Documents/ Birth Certificate</Link></CardTitle>
-          <div className='flex space-x-2'>
-            <Button variant="outline">{userInfo ? `${userInfo.name}` : 'Loading...'}</Button>
-            <Button variant="outline">{userInfo ? `${userInfo.email}` : 'Loading...'}</Button>
-          </div>
+          <div className="flex flex-col justify-start border-2 p-2 border-gray-300 rounded">
+          <div className=' text-sm font-medium'>{userInfo ? `${userInfo.name}` : 'Loading...'}</div>
+          <div className=' text-sm font-medium'>{userInfo ? `${userInfo.email}` : 'Loading...'}</div>
+        </div>
         </CardHeader>
         <Card>
           <CardContent className="p-4">

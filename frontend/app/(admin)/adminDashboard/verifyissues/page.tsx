@@ -3,23 +3,19 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useUser } from '@/context/userContext'
+import { Card } from "@/components/ui/card"
 import { ProtectedRoute } from '@/components/protectedRoute';
-import Link from 'next/link'
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
+    SelectLabel
 } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { postIssue, fetchAllIssues, fetchFilterIssues } from '@/utils/raiseIssueApi';
+import {  fetchAllIssues, fetchFilterIssues } from '@/utils/raiseIssueApi';
 import { approveIssue } from '@/utils/adminApi';
 
 interface Issue {
@@ -35,9 +31,6 @@ const issueTypeList = ["My Isssue posts", "Unsafe Area", "Risky Infrastacture", 
 
 export default function RaiseIssue() {
     const router = useRouter();
-    const [issueType, setIssueType] = useState("")
-    const [issueTitle, setIssueTitle] = useState("")
-    const [issueDescription, setIssueDescription] = useState("")
     const [filterIssueType, setFilterIssueType] = useState('')
     const [allIssues, setAllIssues] = useState<Issue[]>([])
     const [success, setSuccess] = useState("")
@@ -83,9 +76,9 @@ export default function RaiseIssue() {
     return (
         <>
             <ProtectedRoute>
-                <Card className="w-full min-h-screen mx-auto px-10">
+                <Card className="w-full min-h-screen mx-auto px-10 p-6">
                 <div className="space-y-2 w-2/3">
-                        <label htmlFor="issue-type" className="text-sm font-medium">
+                        <label htmlFor="issue-type" className="text-sm font-bold ml-2">
                             Search with issue type
                         </label>
                         <div className=' flex flex-row gap-2'>
