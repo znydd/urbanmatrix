@@ -31,8 +31,6 @@ interface Doc {
 
 export default function RegistrationVerification(){
 
-    const [type, setType] = useState("")
-    const [req_id, setReq_id] = useState("")
     const [docs, setDocs] = useState<Doc[]>([])
 
     useEffect(() => {
@@ -73,50 +71,39 @@ export default function RegistrationVerification(){
 
     const handleApprove = async (doc: Doc) => {
         if(doc.doc_type === "Birth Certificate"){
-        try {
             const resp = await createBithCertificate(doc.name, doc.father, doc.mother, doc.dob, doc.address)
             const birth_cert_no = resp.birth_cert_no
             if(resp){
+                fetchAllDocs()
                 const resp = await pushNotification(`Your Birth Certificate created with ${birth_cert_no}`)
-                handleDecline(doc.req_id, doc.doc_type)
+                const removeResp = await removeReq(doc.req_id, doc.doc_type)
             }
-        } catch (error) {
-            console.error
-        }
         }else if(doc.doc_type === "NID"){
-            try {
+                fetchAllDocs()
                 const resp = await createNid(doc.name, doc.father, doc.mother, doc.email, doc.dob, doc.birth_cert_no, doc.address)
                 const nid_no = resp.nid_no
                 if(resp){
                     const resp = await pushNotification(`Your NID created with ${doc.email} and ${nid_no}`)
-                    handleDecline(doc.req_id, doc.doc_type)
+                    const removeResp = await removeReq(doc.req_id, doc.doc_type)
                 }
-            } catch (error) {
-                console.error
-            }   
         }else{
-            try {
                 const resp = await createDeathCertificate(doc.name, doc.father, doc.mother, doc.dod, doc.birth_cert_no, doc.address)
                 const death_cert_no = resp.death_cert_no
                 if(resp){
+                    fetchAllDocs()
                     const resp = await pushNotification(`Your Death Certificate created with ${death_cert_no}`)
-                    handleDecline(doc.req_id, doc.doc_type)
+                    const removeResp = await removeReq(doc.req_id, doc.doc_type)
                 }
-            } catch (error) {
-                console.error
-            }
         }
 
     }
     
     const handleDecline = async (req_id: string, doc_type: string) => {        
-        try {
                 const removeResp = await removeReq(req_id, doc_type)
                 console.log(removeResp)
-            }
-        catch (error) {
-            console.error
-        }
+                if(removeResp){
+                    const resp = await pushNotification(`Your ${doc_type} request rejected!`)
+                }
         }
 
     return(
@@ -161,7 +148,6 @@ export default function RegistrationVerification(){
                                   
                           ))}
                       </CardContent>
-
       </Card>
       </Card>
 
