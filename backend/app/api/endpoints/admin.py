@@ -153,7 +153,7 @@ async def get_all_reg_req(db = Depends(get_db)):
                        "birth_cert_no":req_form[8],
                        "address":req_form[9]}
                       for req_form in death_req_form]
-        
+    cursor.close()
     all_req_form = birth_req_dict+nid_req_dict+death_req_dict
     
     
