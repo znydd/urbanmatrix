@@ -26,10 +26,10 @@ export default function PayBill() {
                         <CardTitle className="text-2xl font-bold">
                             <Link href={"/dashboard"} className=' text-teal-500'>Dashboard</Link> / <Link href={"/getdocs"}>Pay Bill</Link>
                         </CardTitle>
-                        <div className='flex space-x-2'>
-                            <Button variant="outline">{userInfo ? `${userInfo.name}` : 'Loading...'}</Button>
-                            <Button variant="outline">{userInfo ? `${userInfo.email}` : 'Loading...'}</Button>
-                        </div>
+                        <div className="flex flex-col justify-start border-2 p-2 border-gray-300 rounded">
+          <div className=' text-sm font-medium'>{userInfo ? `${userInfo.name}` : 'Loading...'}</div>
+          <div className=' text-sm font-medium'>{userInfo ? `${userInfo.email}` : 'Loading...'}</div>
+        </div>
                     </CardHeader>
                     <Card className=' min-h-[650px] bg-slate-50'>
                     <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6">
